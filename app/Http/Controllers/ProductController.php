@@ -25,13 +25,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|min:5',
-            'slug' => 'required',
-            'price' => 'required',
-        ]);
-
-        return Product::create($request->all());
+        // เช็คสิทธิ์ admin (role = 1)
+        $user = auth()->user();
+        if ($user->tokenCan("1")) {
+            $request->validate([
+                'name' => 'required|min:5',
+                'slug' => 'required',
+                'price' => 'required',
+            ]);
+            return Product::create($request->all());
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Permission denied to create',
+            ];
+            return response($response, 403);
+        }
     }
 
     /**
@@ -54,10 +63,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
+        $user = auth()->user();
+        if ($user->tokenCan("1")) {
+            $product = Product::find($id);
+            $product->update($request->all());
 
-        return $product;
+            return $product;
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Permission denied to create',
+            ];
+            return response($response, 403);
+        }
     }
 
     /**
@@ -68,6 +86,15 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        return Product::destroy($id);
+        $user = auth()->user();
+        if ($user->tokenCan("1")) {
+            return Product::destroy($id);
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Permission denied to create',
+            ];
+            return response($response, 403);
+        }
     }
 }
