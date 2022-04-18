@@ -13,6 +13,12 @@ class Product extends Model
         'name',
         'slug',
         'description',
-        'price'
+        'price',
+        'image',
+        'user_id'
     ];
+    // Product relationship (Join table) 1 psroduct ถูกเพิ่มได้จาก user 1 คน
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
