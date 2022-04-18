@@ -92,7 +92,7 @@ class ProductController extends Controller
         } else {
             $response = [
                 'status' => 'error',
-                'message' => 'Permission denied to create',
+                'message' => 'Permission denied to created',
             ];
             return response($response, 403);
         }

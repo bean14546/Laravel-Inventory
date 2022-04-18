@@ -29,6 +29,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    // อนุญาติให้ยิง api ข้าม Domain ได้
+    'supports_credentials' => true,
 
 ];
